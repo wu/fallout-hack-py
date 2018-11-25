@@ -18,13 +18,6 @@ class WordGame:
 
         self.words = newwords
 
-    def common_letters(self, word1, word2):
-        match_count = 0
-        for idx in range(0, len(word1)):
-            if word1[idx] == word2[idx]:
-                match_count += 1
-        return match_count
-
     def pick_best_one(self):
         max_score = 0
         max_word = ''
@@ -81,11 +74,10 @@ class WordGame:
         word_scores = {}
         for result in self.simulate_all(turns):
             status = result[1]
-            word = result[0][0]
-
-            if result[1] == True:
+            if status:
                 continue
 
+            word = result[0][0]
             if word in word_scores:
                 word_scores[word] += 1
             else:
@@ -113,3 +105,11 @@ class WordGame:
             g.add_match(pick, match_score)
 
         return False
+
+    @staticmethod
+    def common_letters(word1, word2):
+        match_count = 0
+        for idx in range(0, len(word1)):
+            if word1[idx] == word2[idx]:
+                match_count += 1
+        return match_count

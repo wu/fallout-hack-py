@@ -116,6 +116,8 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(self.g.solver('cult'), 'running solver')
 
     # verify check all words are same length
+    # load test cases
+    # generate test cases
 
 
 if __name__ == '__main__':
