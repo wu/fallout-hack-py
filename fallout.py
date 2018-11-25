@@ -41,10 +41,14 @@ class WordGame:
 
         return max_word
 
-    def simulate_one(self, word, turns):
+    def create_simulator_instance(self):
         g = WordGame()
         g.words = self.words
         g.guesses = self.guesses
+        return g
+
+    def simulate_one(self, word, turns):
+        g = self.create_simulator_instance()
 
         guesses = []
         success = False
@@ -98,9 +102,7 @@ class WordGame:
 
     def solver(self, word):
         print("\nsolver")
-        g = WordGame()
-        g.words = self.words
-        g.guesses = self.guesses
+        g = self.create_simulator_instance()
 
         for turn in range(0, 4):
             pick = g.best_pick(4 - turn)
