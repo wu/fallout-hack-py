@@ -7,9 +7,6 @@ class WordGame:
     def add_word(self, word):
         self.words.append(word)
 
-    def available(self):
-        return self.words
-
     def add_match(self, chosen_word, match_score):
         newwords = []
         for word in self.words:
@@ -67,7 +64,7 @@ class WordGame:
             results.append(result)
         return results
 
-    def best_pick(self, turns):
+    def simulator_pick(self, turns):
         max_score = 0
         max_word = ''
 
@@ -97,7 +94,7 @@ class WordGame:
         g = self.create_simulator_instance()
 
         for turn in range(0, 4):
-            pick = g.best_pick(4 - turn)
+            pick = g.simulator_pick(4 - turn)
             match_score = g.common_letters(pick, word)
             print("pick: " + pick + " [" + str(match_score) + "]")
             if pick == word:

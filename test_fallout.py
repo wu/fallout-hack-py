@@ -12,7 +12,7 @@ class MyTestCase(unittest.TestCase):
         self.g.add_word("foo")
         self.g.add_word("bar")
         self.g.add_word("baz")
-        self.assertListEqual(self.g.available(), ['foo', 'bar', 'baz'])
+        self.assertListEqual(self.g.words, ['foo', 'bar', 'baz'])
 
     def test_letters_in_common(self):
         self.assertEqual(0, self.g.common_letters('aaa', 'bbb'), 'no common letters')
@@ -25,7 +25,7 @@ class MyTestCase(unittest.TestCase):
         self.g.add_word("aab")
         self.g.add_word("ccc")
         self.g.add_match('aaa', 2)
-        self.assertItemsEqual(['aab'], self.g.available())
+        self.assertItemsEqual(['aab'], self.g.words)
 
     def test_pick_best_one(self):
         self.g.add_word('aaaa')
