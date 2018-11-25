@@ -42,26 +42,24 @@ class WordGame:
         return max_word
 
     def simulate_one(self, word, turns):
-        savewords = self.words
-        saveguesses = self.guesses
+        g = WordGame()
+        g.words = self.words
+        g.guesses = self.guesses
 
         guesses = []
         success = False
         for turn in range(0, turns):
 
-            guess = self.pick_best_one()
+            guess = g.pick_best_one()
 
             guesses.append(guess)
 
-            match_score = self.common_letters(guess, word)
-            self.add_match(guess, match_score)
+            match_score = g.common_letters(guess, word)
+            g.add_match(guess, match_score)
 
             if guess == word:
                 success = True
                 break
-
-        self.words = savewords
-        self.guesses = saveguesses
 
         return [guesses, success, word]
 
@@ -73,7 +71,6 @@ class WordGame:
         return results
 
     def best_pick(self, turns):
-
         max_score = 0
         max_word = ''
 
@@ -100,18 +97,17 @@ class WordGame:
             return self.pick_best_one()
 
     def solver(self, word):
-        savewords = self.words
-        saveguesses = self.guesses
+        print("\nsolver")
+        g = WordGame()
+        g.words = self.words
+        g.guesses = self.guesses
 
         for turn in range(0, 4):
-            pick = self.best_pick(4 - turn)
+            pick = g.best_pick(4 - turn)
+            match_score = g.common_letters(pick, word)
+            print("pick: " + pick + " [" + str(match_score) + "]")
             if pick == word:
-                self.words = savewords
-                self.guesses = saveguesses
                 return True
-            self.add_match(pick, self.common_letters(pick, word))
-
-        self.words = savewords
-        self.guesses = saveguesses
+            g.add_match(pick, match_score)
 
         return False
