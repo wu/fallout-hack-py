@@ -73,14 +73,6 @@ class MyTestCase(unittest.TestCase):
                               ],
                              results)
 
-    # def test_analyze_simulation_results(self):
-    #     simulation_results = [[['aaaab'], True, 'aaaab'],
-    #                           [['aaaab', 'aaaba'], True, 'aaaba'],
-    #                           [['aaaab', 'aaaba', 'aabaa'], True, 'aabaa'],
-    #                           [['aaaab', 'aaaba', 'aabaa', 'abaaa'], True, 'abaaa'],
-    #                           [['aaaab', 'aaaba', 'aabaa', 'abaaa'], False, 'baaaa'],
-    #                           ]
-
     def test_solver_silver(self):
         self.g.add_word('fierce')
         self.g.add_word('pleads')
@@ -122,39 +114,6 @@ class MyTestCase(unittest.TestCase):
         self.g.add_word('boss')
         self.g.add_word('cult')
         self.assertTrue(self.g.solver('cult'), 'running solver')
-
-    #
-    # def test_pick_best(self):
-    #     self.g.add_word('aaaab')
-    #     self.g.add_word('aaaba')
-    #     self.g.add_word('aabaa')
-    #     self.g.add_word('abaaa')
-    #     self.g.add_word('baaaa')
-    #     self.assertEqual('baaaa', self.g.best_pick(4), 'pick most likely to fail')
-    #
-
-    # question:
-    #  what is the next word choice that has the least likelihood of failure?
-    #    iterate through every possible target word
-    #    iterate through every word as a possible next choice
-    #    play every game to completion
-    #    find failures
-    #    return word that leads to least failures
-    #
-
-    # run simulation
-    #   iterate through every possible word as the target
-    #   attempt to solve the game using best guess
-    #   if no failure paths, just use best guess for remaining guesses
-    # handle failure paths
-    #  if we get here, there is a risk the game will not be won
-    #  need to consider which choice that has the least likelihood of failure
-    #  identify which choice has the least failure paths
-
-
-    # new solution
-    # - iterate through every possible word to use as the best choice
-    # - see which 'best choice' words have no failure paths
 
     # verify check all words are same length
 
