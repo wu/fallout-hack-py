@@ -52,6 +52,7 @@ class WordGame:
         for turn in range(0, turns):
 
             guess = self.pick_best_one()
+            #print("  guess=" + guess)
 
             guesses.append(guess)
 
@@ -59,7 +60,7 @@ class WordGame:
             self.add_match(guess, match_score)
 
             if guess == word:
-                # print("successfully guessed: " + word)
+                #print("  successfully guessed: " + word)
                 success = True
                 break
 
@@ -69,13 +70,32 @@ class WordGame:
         return [guesses, success, word]
 
     def simulate_all(self, turns):
-        print("\n\nsimulate all")
+        #print("\n\nsimulate all")
         results = []
         for word in self.words:
             result = self.simulate_one(word, turns)
-            print("simulation results for: " + word + " = " + str(result[1]))
+            #print("simulation results for: " + word + " = " + str(result[1]))
             results.append(result)
         return results
+
+    def solver(self, word):
+        print("\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\nsolver\n\n")
+        savewords = self.words
+        saveguesses = self.guesses
+
+        for turn in range(0, 4):
+            pick = self.best_pick(4 - turn)
+            print("pick: " + pick + ' [' + str(4 - turn) + ']')
+            if pick == word:
+                self.words = savewords
+                self.guesses = saveguesses
+                return True
+            self.add_match(pick, self.common_letters(pick, word))
+
+        self.words = savewords
+        self.guesses = saveguesses
+
+        return False
 
 
     def best_pick(self, turns):
@@ -86,7 +106,7 @@ class WordGame:
         word_scores = {}
         for result in self.simulate_all(turns):
             status = result[1]
-            word = result[2]
+            word = result[0][0]
 
             if result[1] == True:
                 continue
@@ -101,53 +121,9 @@ class WordGame:
                 max_score = word_scores[word]
                 max_word = word
 
-        print(word_scores)
+        if max_word:
+            return max_word
+        else:
+            return self.pick_best_one()
 
-        return max_word
-
-    def get_paths(self):
-        paths = []
-
-        for target in self.words:
-            print("target: " + target)
-
-            for idx1 in range(0, len(self.words)):
-                word1 = self.words[idx1]
-
-                if word1 == target:
-                    paths.append([True, word1])
-                    print(word1)
-                else:
-                    for idx2 in range(0, len(self.words)):
-                        word2 = self.words[idx2]
-                        if word2 == word1:
-                            pass
-                        elif word2 == target:
-                            paths.append([True, word1, word2])
-                            print(word1, word2)
-                        else:
-                            for idx3 in range(idx2 + 1, len(self.words)):
-                                word3 = self.words[idx3]
-                                if word3 == word1 or word3 == word2:
-                                    pass
-                                elif word3 == target:
-                                    paths.append([True, word1, word2, word3])
-                                    print(word1, word2, word3)
-                                else:
-                                    for idx4 in range(idx3 + 1, len(self.words)):
-                                        word4 = self.words[idx4]
-                                        if word4 == word1 or word4 == word2 or word4 == word3:
-                                            pass
-                                        elif word4 == target:
-                                            paths.append([True, word1, word2, word3, word4])
-                                            print(word1, word2, word3, word4)
-                                        else:
-                                            paths.append([False, word1, word2, word3, word4])
-                                            print("failure")
-
-        print("paths:")
-        for path in paths:
-            print(path)
-
-        return paths
 

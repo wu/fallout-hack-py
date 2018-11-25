@@ -27,13 +27,13 @@ class MyTestCase(unittest.TestCase):
         self.g.add_match('aaa', 2)
         self.assertItemsEqual(['aab'], self.g.available())
 
-    def test_pick_best(self):
+    def test_pick_best_one(self):
         self.g.add_word('aaaa')
         self.g.add_word('aacc')
         self.g.add_word('cccc')
         self.assertEqual('aacc', self.g.pick_best_one(), 'best pick of three words')
 
-    def test_pick_best_reverse(self):
+    def test_pick_best_one_reverse(self):
         self.g.add_word('cccc')
         self.g.add_word('aacc')
         self.g.add_word('aaaa')
@@ -65,37 +65,73 @@ class MyTestCase(unittest.TestCase):
         self.g.add_word('abaaa')
         self.g.add_word('baaaa')
         results = self.g.simulate_all(4)
-        self.assertTrue(results[0][1])
-        self.assertTrue(results[1][1])
-        self.assertTrue(results[2][1])
-        self.assertTrue(results[3][1])
-        self.assertFalse(results[4][1])
-
-    def test_pick_best(self):
-        self.g.add_word('aaaab')
-        self.g.add_word('aaaba')
-        self.g.add_word('aabaa')
-        self.g.add_word('abaaa')
-        self.g.add_word('baaaa')
-        self.assertEqual('baaaa', self.g.best_pick(4), 'pick most likely to fail')
-
-    def test_get_paths(self):
-        self.g.add_word('aab')
-        self.g.add_word('aba')
-        self.g.add_word('baa')
-        self.assertListEqual([[True, 'aab'],
-                              [True, 'aba', 'aab'],
-                              [True, 'baa', 'aab'],
-                              [True, 'aab', 'aba'],
-                              [True, 'aba'],
-                              [True, 'baa', 'aab', 'aba'],
-                              [True, 'aab', 'aba', 'baa'],
-                              [True, 'aba', 'baa'],
-                              [True, 'baa']
+        self.assertListEqual([[['aaaab'], True, 'aaaab'],
+                              [['aaaab', 'aaaba'], True, 'aaaba'],
+                              [['aaaab', 'aaaba', 'aabaa'], True, 'aabaa'],
+                              [['aaaab', 'aaaba', 'aabaa', 'abaaa'], True, 'abaaa'],
+                              [['aaaab', 'aaaba', 'aabaa', 'abaaa'], False, 'baaaa'],
                               ],
-                             self.g.get_paths(),
-                             'getting all possible paths')
+                             results)
 
+    # def test_analyze_simulation_results(self):
+    #     simulation_results = [[['aaaab'], True, 'aaaab'],
+    #                           [['aaaab', 'aaaba'], True, 'aaaba'],
+    #                           [['aaaab', 'aaaba', 'aabaa'], True, 'aabaa'],
+    #                           [['aaaab', 'aaaba', 'aabaa', 'abaaa'], True, 'abaaa'],
+    #                           [['aaaab', 'aaaba', 'aabaa', 'abaaa'], False, 'baaaa'],
+    #                           ]
+
+    def test_solver_silver(self):
+        self.g.add_word('fierce')
+        self.g.add_word('pleads')
+        self.g.add_word('insane')
+        self.g.add_word('shiner')
+        self.g.add_word('wagons')
+        self.g.add_word('ripped')
+        self.g.add_word('visage')
+        self.g.add_word('crimes')
+        self.g.add_word('silver')
+        self.g.add_word('tables')
+        self.g.add_word('wastes')
+        self.assertTrue(self.g.solver('silver'), 'running solver')
+
+    def test_solver_cult_first(self):
+        self.g.add_word('cult')
+        self.g.add_word('kind')
+        self.g.add_word('bill')
+        self.g.add_word('warm')
+        self.g.add_word('pare')
+        self.g.add_word('good')
+        self.g.add_word('loud')
+        self.g.add_word('labs')
+        self.g.add_word('furs')
+        self.g.add_word('pots')
+        self.g.add_word('boss')
+        self.assertTrue(self.g.solver('cult'), 'running solver')
+
+    def test_solver_cult_last(self):
+        self.g.add_word('kind')
+        self.g.add_word('bill')
+        self.g.add_word('warm')
+        self.g.add_word('pare')
+        self.g.add_word('good')
+        self.g.add_word('loud')
+        self.g.add_word('labs')
+        self.g.add_word('furs')
+        self.g.add_word('pots')
+        self.g.add_word('boss')
+        self.g.add_word('cult')
+        self.assertTrue(self.g.solver('cult'), 'running solver')
+
+    #
+    # def test_pick_best(self):
+    #     self.g.add_word('aaaab')
+    #     self.g.add_word('aaaba')
+    #     self.g.add_word('aabaa')
+    #     self.g.add_word('abaaa')
+    #     self.g.add_word('baaaa')
+    #     self.assertEqual('baaaa', self.g.best_pick(4), 'pick most likely to fail')
+    #
 
     # question:
     #  what is the next word choice that has the least likelihood of failure?
