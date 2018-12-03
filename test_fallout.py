@@ -31,13 +31,13 @@ class MyTestCase(unittest.TestCase):
         self.g.add_word('aaaa')
         self.g.add_word('aacc')
         self.g.add_word('cccc')
-        self.assertEqual('aacc', self.g.pick_best_one(), 'best pick of three words')
+        self.assertEqual('aacc', self.g.pick_best_score(), 'best pick of three words')
 
     def test_pick_best_one_reverse(self):
         self.g.add_word('cccc')
         self.g.add_word('aacc')
         self.g.add_word('aaaa')
-        self.assertEqual('aacc', self.g.pick_best_one(), 'best pick of three words')
+        self.assertEqual('aacc', self.g.pick_best_score(), 'best pick of three words')
 
     def test_simulate_one(self):
         self.g.add_word('aaa')

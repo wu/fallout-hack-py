@@ -15,7 +15,7 @@ class WordGame:
 
         self.words = newwords
 
-    def pick_best_one(self):
+    def pick_best_score(self):
         max_score = 0
         max_word = ''
 
@@ -44,7 +44,7 @@ class WordGame:
         success = False
         for turn in range(0, turns):
 
-            guess = g.pick_best_one()
+            guess = g.pick_best_score()
 
             guesses.append(guess)
 
@@ -87,7 +87,7 @@ class WordGame:
         if max_word:
             return max_word
         else:
-            return self.pick_best_one()
+            return self.pick_best_score()
 
     def solver(self, word):
         print("\nsolver")
