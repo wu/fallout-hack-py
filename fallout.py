@@ -78,7 +78,7 @@ class WordGame:
         word_scores = {}
         for result in self.simulate_all(turns):
             status = result[1]
-            if status:
+            if not status:
                 continue
 
             word = result[0][0]
