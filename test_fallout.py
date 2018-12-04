@@ -73,51 +73,123 @@ class MyTestCase(unittest.TestCase):
                               ],
                              results)
 
-    def test_solver_silver(self):
-        self.g.add_word('fierce')
-        self.g.add_word('pleads')
-        self.g.add_word('insane')
-        self.g.add_word('shiner')
-        self.g.add_word('wagons')
-        self.g.add_word('ripped')
-        self.g.add_word('visage')
-        self.g.add_word('crimes')
-        self.g.add_word('silver')
-        self.g.add_word('tables')
-        self.g.add_word('wastes')
-        self.assertTrue(self.g.solver('silver'), 'running solver')
+    def test_solver_actual_cases(self):
+        cases = self.get_cases()
+        total_guesses = 0
+        for case in cases:
+            g = WordGame()
+            answer = case[0]
+            words = case[1:]
 
-    def test_solver_cult_first(self):
-        self.g.add_word('cult')
-        self.g.add_word('kind')
-        self.g.add_word('bill')
-        self.g.add_word('warm')
-        self.g.add_word('pare')
-        self.g.add_word('good')
-        self.g.add_word('loud')
-        self.g.add_word('labs')
-        self.g.add_word('furs')
-        self.g.add_word('pots')
-        self.g.add_word('boss')
-        self.assertTrue(self.g.solver('cult'), 'running solver')
+            for word in words:
+                g.add_word(word)
+            result = g.solver(answer)
+            self.assertTrue(result, 'solver was successful')
 
-    def test_solver_cult_last(self):
-        self.g.add_word('kind')
-        self.g.add_word('bill')
-        self.g.add_word('warm')
-        self.g.add_word('pare')
-        self.g.add_word('good')
-        self.g.add_word('loud')
-        self.g.add_word('labs')
-        self.g.add_word('furs')
-        self.g.add_word('pots')
-        self.g.add_word('boss')
-        self.g.add_word('cult')
-        self.assertTrue(self.g.solver('cult'), 'running solver')
+            # count total number of guesses on successful guess
+            if result:
+                total_guesses += result
+
+        self.assertEqual(116, total_guesses, 'solved actual tests in expected guesses')
+
+
+    def test_solver_best_case(self):
+        cases = self.get_cases()
+        total_guesses = 0
+        for case in cases:
+            g = WordGame()
+            answer = case[0]
+            words = case[1:]
+
+            # move answer to beginning of list to make guessing easier
+            words.remove(answer)
+            words.insert(0, answer)
+
+            for word in words:
+                g.add_word(word)
+            result = g.solver(answer)
+            self.assertTrue(result, 'solver was successful')
+
+            # count total number of guesses on successful guess
+            if result:
+                total_guesses += result
+
+        self.assertEqual(99, total_guesses, 'solved best cases in expected guesses')
+
+    def test_solver_worst_case(self):
+        cases = self.get_cases()
+        total_guesses = 0
+        for case in cases:
+            g = WordGame()
+            answer = case[0]
+            words = case[1:]
+
+            # move answer to end of the list to make guessing more difficult
+            words.remove(answer)
+            words.append(answer)
+
+            for word in words:
+                g.add_word(word)
+            result = g.solver(answer)
+            self.assertTrue(result, 'solver was successful')
+
+            # count total number of guesses on successful guess
+            if result:
+                total_guesses += result
+
+        self.assertEqual(132, total_guesses, 'solved worst case in expected guesses')
 
     # verify check all words are same length
     # load test cases
     # generate test cases
+
+    def get_cases(self):
+        cases = [
+            ["silver", "fierce", "pleads", "insane", "shiner", "wagons", "ripped", "visage", "crimes", "silver", "tables", "wastes"],
+            ["cult", "cult", "kind", "bill", "warm", "pare", "good", "loud", "labs", "furs", "pots", "boss"],
+            ["take", "self", "atop", "join", "shot", "four", "once", "ways", "take", "hair", "mood", "mace"],
+            ["lamp", "dens", "flat", "pays", "full", "farm", "lamp", "colt", "chip", "crap", "cain", "call"],
+            ["scene", "scene", "start", "minds", "flame", "types", "while", "aware", "alien", "fails", "wires", "sizes"],
+            ["instore", "fanatic", "objects", "instore", "warning", "welfare", "offense", "takings", "stunned", "becomes", "invaded", "decried"],
+            ["four", "ball", "call", "cape", "colt", "does", "evil", "face", "four", "hope", "owed", "pots"],
+            ["spokes", "across", "devoid", "handle", "herald", "jacket", "marked", "movies", "random", "rather", "refuse", "spokes"],
+            ["silks", "allow", "silks", "rolls", "comes", "wires", "sever", "haven", "again", "clear", "paper", "pulls"],
+            ["because", "cleared", "allowed", "thieves", "because", "greeted", "between", "stained", "watched", "streets", "country", "dwindle"],
+            ["gift", "gift", "iron", "last", "lots", "mood", "nice", "none", "oily", "seat", "shop", "spin"],
+            ["wants", "spies", "robes", "dress", "wants", "james", "posed", "rates", "radio", "ready", "sells", "tires"],
+            ["fall", "pray", "task", "raid", "lamp", "maul", "fall", "cave", "wave", "rats", "pays", "lays"],
+            ["speed", "death", "orbit", "usual", "joins", "broke", "level", "scope", "would", "speed", "scent", "weird"],
+            ["waves", "butch", "clock", "hatch", "kinds", "lance", "peace", "ranks", "rubes", "scant", "skins", "waves"],
+            ["trip", "hand", "send", "dens", "task", "trip", "went", "says", "beam", "cold", "soap", "none"],
+            ["elders", "remain", "armies", "result", "almost", "taurus", "rescue", "failed", "timers", "report", "knight", "elders"],
+            ["round", "above", "booty", "round", "voice", "large", "thick", "taint", "scarf", "crude", "ready", "shops"],
+            ["poised", "befell", "utmost", "slight", "mongol", "poised", "locals", "ripped", "single", "ritual", "result", "couple"],
+            ["sides", "range", "waves", "owned", "raids", "sides", "stead", "races", "raise", "state", "owner", "hired"],
+            ["dropped", "dropped", "captain", "routing", "ceiling", "packing", "closest", "fertile", "helping", "caliber", "founded", "desired"],
+            ["past", "past", "lays", "huts", "walk", "camp", "sash", "line", "role", "last", "garl", "dais"],
+            ["plan", "huts", "hear", "wear", "fork", "very", "loan", "feat", "pack", "rank", "plan", "away", "food"],
+            ["cast", "fuse", "fork", "cast", "rule", "tall", "soil", "felt", "rank", "fuel", "here", "tarp"],
+            ["vast", "deed", "read", "rush", "sash", "rats", "dead", "also", "owed", "vast", "held", "sets"],
+            ["does", "very", "well", "wars", "does", "fork", "huts", "fell", "fear", "cool", "term", "fury"],
+            ["exit", "sung", "stay", "exit", "weak", "spin", "yeah", "wish", "step", "star", "mass", "seen"],
+            ["hearts", "hearts", "travel", "blamed", "paying", "dapper", "beaten", "passes", "caring", "healed", "wealth", "worked"],
+            ["ripper", "teevee", "driver", "thinks", "shiner", "temple", "status", "ripper", "common", "spoils", "center", "yields"],
+            ["vipers", "vipers", "justin", "mirror", "wooden", "hauled", "bundle", "street", "failed", "misers", "anyone", "erupts"],
+            ["ages", "gang", "ages", "deep", "gain", "none", "nice", "lift", "owns", "lose", "seem", "salt"],
+            ["befell", "shovel", "minute", "bowels", "raider", "prayer", "seemed", "oxygen", "module", "single", "befell", "debate"],
+            ["tore", "foul", "four", "egos", "tore", "goes", "fell", "join", "golf", "core", "song", "soul"],
+            ["seems", "aways", "taunt", "plush", "alert", "loose", "looks", "gangs", "takes", "seems", "scene", "logic"],
+            ["section", "dragons", "staying", "hurting", "parties", "winning", "reached", "captain", "outcast", "signals", "section", "reading"],
+            ["godfather", "radiation", "crumbling", "engineers", "projector", "surviving", "defensive", "discovery", "godfather", "monocolor", "situation", "murderous"],
+            ["same", "died", "hits", "wars", "furs", "fork", "goes", "walk", "used", "holy", "same", "part"],
+            ["chooses", "reduced", "shelter", "thrower", "worried", "tonight", "erected", "strange", "turrets", "chooses", "hundred", "godlike"],
+            ["armor", "thugs", "notes", "cache", "board", "truth", "shady", "armor", "games", "slips", "speed", "catch"],
+            ["retreated", "sponsored", "increased", "processor", "violently", "wastelord", "clockwork", "secretive", "kidnapped", "delimiter", "retreated", "desperate"],
+            ["expose", "riches", "cattle", "limped", "figure", "rocket", "expose", "caught", "immune", "gained", "listed", "rifles"],
+            ["village", "greatly", "shotgun", "winning", "crushed", "ghengis", "mirrors", "sterile", "insults", "message", "involve", "village"],
+        ]
+        return cases
+
 
 
 if __name__ == '__main__':
