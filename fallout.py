@@ -5,9 +5,11 @@ class WordGame:
         self.guesses = []
 
     def add_word(self, word):
+        """Add a word to the list of available words"""
         self.words.append(word)
 
     def add_match(self, chosen_word, match_score):
+        """Record a guess and remove words that are no longer candidates"""
         newwords = []
         for word in self.words:
             if self.common_letters(chosen_word, word) == match_score:
@@ -16,6 +18,7 @@ class WordGame:
         self.words = newwords
 
     def pick_best_score(self):
+        """Pick the word to guess based on number of letters in common with other words"""
         max_score = 0
         max_word = ''
 
@@ -32,12 +35,14 @@ class WordGame:
         return max_word
 
     def create_simulator_instance(self):
+        """Create a simulator to play from the current state without altering state"""
         g = WordGame()
         g.words = self.words
         g.guesses = self.guesses
         return g
 
     def simulate_one(self, word, turns):
+        """Use a simulator instance to play the game and see if we are successful"""
         g = self.create_simulator_instance()
 
         guesses = []
@@ -58,6 +63,7 @@ class WordGame:
         return [guesses, success, word]
 
     def simulate_all(self, turns):
+        """For each word, assume that word is the target, and run the simulator"""
         results = []
         for word in self.words:
             result = self.simulate_one(word, turns)
@@ -65,6 +71,7 @@ class WordGame:
         return results
 
     def simulator_pick(self, turns):
+        """Analyze all possible games and return word with highest rate of success"""
         max_score = 0
         max_word = ''
 
@@ -91,6 +98,7 @@ class WordGame:
 
     def solver(self, word):
         print("\nsolver")
+        """Attempt to solve a game with a known answer to evaluate the algorithm"""
         g = self.create_simulator_instance()
 
         for turn in range(0, 4):
@@ -105,6 +113,7 @@ class WordGame:
 
     @staticmethod
     def common_letters(word1, word2):
+        """Given two words, return number of letters in common"""
         match_count = 0
         for idx in range(0, len(word1)):
             if word1[idx] == word2[idx]:
