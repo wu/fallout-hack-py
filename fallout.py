@@ -97,16 +97,14 @@ class WordGame:
             return self.pick_best_score()
 
     def solver(self, word):
-        print("\nsolver")
         """Attempt to solve a game with a known answer to evaluate the algorithm"""
         g = self.create_simulator_instance()
 
         for turn in range(0, 4):
             pick = g.simulator_pick(4 - turn)
             match_score = g.common_letters(pick, word)
-            print("pick: " + pick + " [" + str(match_score) + "]")
             if pick == word:
-                return True
+                return turn + 1
             g.add_match(pick, match_score)
 
         return False
